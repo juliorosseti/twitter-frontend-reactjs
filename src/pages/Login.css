@@ -24,10 +24,11 @@
   height: 44px;
   padding: 0 15px;
   font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .login-wrapper form button {
-  margin: 10px 0 0;
+  margin-bottom: 10px;
   background: #4bb0ee;
   border-radius: 5px;
   height: 44px;
@@ -41,3 +42,9 @@
 .login-wrapper form button:hover {
   background: #42a1db;
 }
+
+.login-wrapper h2 {
+  margin: 15px 0px 5px;
+}
+
+a { text-decoration: none; }

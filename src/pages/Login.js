@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import AlertMessage from '../components/AlertMessage';
 import api from '../services/api';
+import { Link } from 'react-router-dom';
 
 import twitterLogo from '../twitter.svg';
 import './Login.css';
@@ -7,41 +9,52 @@ import './Login.css';
 export default class Login extends Component {
 
   state = {
-    user: '',
+    email: '',
     pass: '',
-    errorMessage: ''
+    alert: {
+      type: '',
+      text: '',
+    }
   };
 
   handleSubmit = async e => {
     e.preventDefault();
     let self = this;
 
-    const { user, pass } = this.state;
+    const { email, pass } = this.state;
 
-    if (!user.length && !pass.length) return;
+    if (!email.length && !pass.length) return;
 
     await api.post('/authenticate', {
-      email: user,
+      email: email,
       password: pass
     }).then(function (response) {
 
       self.setState({
-        errorMessage: 'Login successful, you token is: ' + response.data.token,
-        user: '',
+        alert: {
+          type: 'success',
+          text: 'Login successful, you token is: ' + response.data.token
+        },
+        email: '',
         pass: ''
       })
     })
     .catch(function (error) {
-      self.setState({ errorMessage: error.response.data.message })
+      self.setState({
+        alert: {
+          type: 'error',
+          text: error.response.data.message
+        }
+      })
     });
 
-      // localStorage.setItem('@Twitter:user', user);
+      // localStorage.setItem('@Twitter:email', email);
 
     // this.props.history.push('/timeline');
   };
 
-  handleInputUserChange = (e) => {
-    this.setState({ user: e.target.value });
+  handleInputEmailChange = (e) => {
+    this.setState({ email: e.target.value });
   };
 
   handleInputPassChange = (e) => {
@@ -51,22 +64,29 @@ export default class Login extends Component {
   render() {
     return (
       <div className="login-wrapper">
+
         <img src={twitterLogo} alt="Twitter" />
+        <h2>Login</h2>
+
         <form onSubmit={this.handleSubmit}>
-        <input
-          value={this.state.user}
-          onChange={this.handleInputUserChange}
-          placeholder="Usuário / E-mail"
-        />
-        <input
-          value={this.state.pass}
-          onChange={this.handleInputPassChange}
-          placeholder="Senha"
-          type="password"
-        />
-        <button type="submit">Entrar</button>
-        <div className="">{this.state.errorMessage}</div>
+          <input
+            value={this.state.email}
+            onChange={this.handleInputEmailChange}
+            placeholder="Usuário / E-mail"
+          />
+          <input
+            value={this.state.pass}
+            onChange={this.handleInputPassChange}
+            placeholder="Senha"
+            type="password"
+          />
+          <button type="submit">Entrar</button>
+          <Link to="/register">Registrar-se</Link>
+
+          <AlertMessage text={this.state.alert.text} type={this.state.alert.type} />
+
         </form>
+
       </div>
     );
   }

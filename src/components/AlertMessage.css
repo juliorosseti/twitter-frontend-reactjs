@@ -1,0 +1,18 @@
+.alert-message {
+    padding: 10px 20px;
+    background: #f1f1f1;
+    border-radius: 6px;
+}
+.alert-message:empty {
+    display: none;
+}
+
+.alert-message.alert-error {
+    background-color: #e63434;
+    color: white;
+}
+
+.alert-message.alert-success {
+    background-color: #6ddf40;
+    color: black;
+}
